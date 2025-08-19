@@ -3,7 +3,7 @@ from ultralytics import YOLO
 from ultralytics.nn.tasks import DetectionModel
 from ultralytics.nn.modules import Conv
 import torch
-from torch.nn import Sequential, Conv2d  # Import Conv2d
+from torch.nn import Sequential, Conv2d, BatchNorm2d  # Import BatchNorm2d
 import cv2
 import tempfile
 import numpy as np
@@ -24,8 +24,8 @@ def load_model(path):
     """Loads and caches the YOLOv8 model, adding required classes to PyTorch's trusted list."""
     try:
         # This is the fix for the PyTorch 2.6+ security update.
-        # It tells PyTorch to trust architecture classes from ultralytics and torch itself.
-        torch.serialization.add_safe_globals([DetectionModel, Sequential, Conv, Conv2d])
+        # It tells PyTorch to trust all required architecture classes from the model file.
+        torch.serialization.add_safe_globals([DetectionModel, Sequential, Conv, Conv2d, BatchNorm2d])
         model = YOLO(path)
         return model
     except Exception as e:
