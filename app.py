@@ -1,5 +1,7 @@
 import streamlit as st
 from ultralytics import YOLO
+from ultralytics.nn.tasks import DetectionModel
+import torch
 import cv2
 import tempfile
 import numpy as np
@@ -17,8 +19,11 @@ st.set_page_config(
 # --- Model Loading ---
 @st.cache_resource
 def load_model(path):
-    """Loads and caches the YOLOv8 model to avoid reloading on each interaction."""
+    """Loads and caches the YOLOv8 model, adding the model class to PyTorch's trusted list."""
     try:
+        # This line is the fix for the PyTorch 2.6+ security update.
+        # It tells PyTorch to trust the model architecture class from ultralytics.
+        torch.serialization.add_safe_globals([DetectionModel])
         model = YOLO(path)
         return model
     except Exception as e:
