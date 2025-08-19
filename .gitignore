@@ -1,0 +1,19 @@
+# Jupyter Notebook specific
+.ipynb_checkpoints
+
+# Python specific
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+.env/
+
+# Dataset and runs
+/runs
+/train
+/test
+/valid
+*.jpg
+*.txt
+*.yaml
