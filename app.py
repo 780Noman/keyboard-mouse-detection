@@ -1,9 +1,9 @@
 import streamlit as st
 from ultralytics import YOLO
 from ultralytics.nn.tasks import DetectionModel
-from ultralytics.nn.modules import Conv  # Import the Conv class
+from ultralytics.nn.modules import Conv
 import torch
-from torch.nn import Sequential
+from torch.nn import Sequential, Conv2d  # Import Conv2d
 import cv2
 import tempfile
 import numpy as np
@@ -25,7 +25,7 @@ def load_model(path):
     try:
         # This is the fix for the PyTorch 2.6+ security update.
         # It tells PyTorch to trust architecture classes from ultralytics and torch itself.
-        torch.serialization.add_safe_globals([DetectionModel, Sequential, Conv])
+        torch.serialization.add_safe_globals([DetectionModel, Sequential, Conv, Conv2d])
         model = YOLO(path)
         return model
     except Exception as e:
